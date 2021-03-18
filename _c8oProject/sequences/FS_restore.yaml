@@ -1,3 +1,4 @@
+responseTimeout: 600
 ↓jIf [steps.IfStep-1616002484692]: 
   condition: cdb_file != "" && cdb_name != ""
   ↓Call_Sequence [steps.SequenceStep-1616002484695]: 
@@ -6,14 +7,15 @@
     expression: |
       'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
       if (fs_cdb_props != null) {
-      	cmd = ["bash", "couchdb-dump.sh", "-r", "-q"];
-      	
-      	cmd = cmd.concat( ["-H", fs_cdb_props.cdb_host] );
-      	cmd = cmd.concat( ["-P", fs_cdb_props.cdb_port] );
-      	cmd = cmd.concat( ["-d", fs_cdb_props.cdb_prefix + cdb_name] );
-      	cmd = cmd.concat( ["-f", cdb_file] );
-      	cmd = cmd.concat( ["-u", fs_cdb_props.cdb_user] );
-      	cmd = cmd.concat( ["-p", fs_cdb_props.cdb_pwd] );
+      	cmd = [
+      		"bash", "couchdb-dump.sh", "-r", "-q",
+      		"-H", fs_cdb_props.cdb_host,
+      		"-P", fs_cdb_props.cdb_port,
+      		"-d", fs_cdb_props.cdb_prefix + cdb_name,
+      		"-f", cdb_file,
+      		"-u", fs_cdb_props.cdb_user,
+      		"-p", fs_cdb_props.cdb_pwd
+      		];
       	
       	log.debug(cmd);
       	

@@ -1,0 +1,8 @@
+↓init_vars [steps.SimpleStep-1616086308916]: 
+  expression: cdb_folder = "dbs/";
+↓IfDirectoryExists [steps.IfFileExistStep-1616086308919]: 
+  condition: '".//" + cdb_folder'
+  ↓Delete_Directory [steps.DeleteStep-1616086308922]: 
+    sourcePath: '".//" + cdb_folder'
+↓Create_directory [steps.CreateDirectoryStep-1616086308925]: 
+  destinationPath: '".//" + cdb_folder'

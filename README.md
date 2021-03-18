@@ -11,6 +11,7 @@ It performs a backup of the given Fullsync database name.
 
 - Variables:
     - *cdb_name* (Name of the Fullsync database to backup - String)
+    - *cdb_gz* (Compress (.gz) the Fullsync database file: 1|true - String)
 
 **.pxml** requester : You will get an XML response with an attachment element that can be used as a Source for other Convertigo sequences:
 
@@ -35,3 +36,7 @@ It restores a backup file and creates a Fullsync database given its name.
     - *cdb_file* (File path of the Fullsync database backup - Input file)
 
 If **cdb_name** Fullsync Database already exists on Convertigo Server, it is first deleted then recreated or else it creates a new Fullsync Database name.
+
+### FS_reset_db_folder
+
+It deletes the Fullsync databases backup folder
