@@ -1,0 +1,8 @@
+↑convertigo: 7.9.0.m006
+↓lib_FullSyncImportExport [core.Project]: 
+  comment: Mashup Sequencer project
+  version: 1.0
+  ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
+  ↓FS_backup [sequences.GenericSequence]: 🗏 sequences/FS_backup.yaml
+  ↓FS_restore [sequences.GenericSequence]: 🗏 sequences/FS_restore.yaml
+  ↓getProperties [sequences.GenericSequence]: 🗏 sequences/getProperties.yaml

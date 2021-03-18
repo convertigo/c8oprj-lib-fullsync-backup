@@ -1,0 +1,77 @@
+↓jIf [steps.IfStep-1616002484692]: 
+  condition: cdb_file != "" && cdb_name != ""
+  ↓Call_Sequence [steps.SequenceStep-1616002484695]: 
+    sourceSequence: lib_FullSyncImportExport.getProperties
+  ↓compute_script_params [steps.SimpleStep-1616002484698]: 
+    expression: |
+      'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+      if (fs_cdb_props != null) {
+      	cmd = ["bash", "couchdb-dump.sh", "-r", "-q"];
+      	
+      	cmd = cmd.concat( ["-H", fs_cdb_props.cdb_host] );
+      	cmd = cmd.concat( ["-P", fs_cdb_props.cdb_port] );
+      	cmd = cmd.concat( ["-d", fs_cdb_props.cdb_prefix + cdb_name] );
+      	cmd = cmd.concat( ["-f", cdb_file] );
+      	cmd = cmd.concat( ["-u", fs_cdb_props.cdb_user] );
+      	cmd = cmd.concat( ["-p", fs_cdb_props.cdb_pwd] );
+      	
+      	log.debug(cmd);
+      	
+      	var fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
+      	var delFS = fsclient.deleteDatabase(cdb_name);
+      	var putFS = fsclient.putDatabase(cdb_name);
+      	
+      	log.debug(">>>>delFS:"+delFS);
+      	log.debug(">>>>putFS:"+putFS);
+      } else {
+      	log.warn("Error: Can not find Fullsync properties.");
+      }'
+  ↓jIf [steps.IfStep-1616060963348]: 
+    condition: fs_cdb_props != null
+    ↓Process_execute [steps.ProcessExecStep-1616002484701]: 
+      commandLine: cmd
+      executionDirectory: .//
+    ↓IfIsInThenElse [steps.IsInThenElseStep-1616072821547]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1616002484701
+            - java.lang.String: 
+              - ↑value: ./exit/text()
+      testDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: AND
+                - java.lang.String: 
+                  - ↑value: ^0$
+      ↓jThen [steps.ThenStep-1616072821550]: 
+        ↓Element [steps.XMLElementStep-1616072821553]: 
+          nodeName: isSuccess
+          nodeText: true
+      ↓jElse [steps.ElseStep-1616072821556]: 
+        ↓Element [steps.XMLElementStep-1616072821559]: 
+          nodeName: isSuccess
+          nodeText: false
+        ↓Element1 [steps.XMLElementStep-1616073340738]: 
+          nodeName: error
+          nodeText: true
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1616002484701
+                - java.lang.String: 
+                  - ↑value: ./output/text()
+↓cdb_name [variables.RequestableVariable-1616002484722]: 
+  value: 
+↓cdb_file [variables.RequestableVariable-1616002700241]: 
+  isFileUpload: true
+  value: 

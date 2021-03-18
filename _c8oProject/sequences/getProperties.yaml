@@ -1,0 +1,30 @@
+accessibility: Private
+↓getProperties [steps.SimpleStep-1615992349057]: 
+  expression: |
+    'propsManager = com.twinsoft.convertigo.engine.EnginePropertiesManager;
+    
+    cdb_prefix = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PREFIX);
+    cdb_url = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_URL);
+    cdb_user = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_USERNAME);
+    cdb_pwd = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PASSWORD);
+    
+    jUrl = new java.net.URL(cdb_url);
+    cdb_host = ""+jUrl.getHost();
+    cdb_port = ""+jUrl.getPort();
+    
+    fs_cdb_props = {
+    	"cdb_prefix": (cdb_prefix != "" ? cdb_prefix+"_" : ""),
+    	"cdb_url": cdb_url,
+    	"cdb_host": cdb_host,
+    	"cdb_port": cdb_port,
+    	"cdb_user": cdb_user,
+    	"cdb_pwd": cdb_pwd
+    };'
+↓Set_object_in_session [steps.SessionSetObjectStep-1615998807570]: 
+  key: fs_cdb_props
+  value: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: fs_cdb_props

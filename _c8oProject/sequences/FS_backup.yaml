@@ -1,0 +1,98 @@
+↓init_vars [steps.SimpleStep-1616064621233]: 
+  expression: |
+    cdb_folder = "dbs/";
+    cdb_bkp_ext = "_backup.json";
+↓IfDirectoryExists [steps.IfFileExistStep-1616064791664]: 
+  condition: '".//" + cdb_folder'
+  ↓Delete_Directory [steps.DeleteStep-1616064227519]: 
+    sourcePath: '".//" + cdb_folder'
+↓Create_directory [steps.CreateDirectoryStep-1616064241877]: 
+  destinationPath: '".//" + cdb_folder'
+↓jIf [steps.IfStep-1615999332441]: 
+  condition: cdb_name != ""
+  ↓Call_Sequence [steps.SequenceStep-1615994574365]: 
+    sourceSequence: lib_FullSyncImportExport.getProperties
+  ↓compute_script_params [steps.SimpleStep-1615995852193]: 
+    expression: |
+      'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+      if (fs_cdb_props != null) {
+      	cmd = ["bash", "couchdb-dump.sh", "-b", "-q"];
+      
+      	cdb_bkp_name = cdb_name + cdb_bkp_ext;
+      	cdb_bkp_file = cdb_folder + cdb_bkp_name;
+      	cmd = cmd.concat( ["-H", fs_cdb_props.cdb_host] );
+      	cmd = cmd.concat( ["-P", fs_cdb_props.cdb_port] );
+      	cmd = cmd.concat( ["-d", fs_cdb_props.cdb_prefix + cdb_name] );
+      	cmd = cmd.concat( ["-f", cdb_bkp_file] );
+      	cmd = cmd.concat( ["-u", fs_cdb_props.cdb_user] );
+      	cmd = cmd.concat( ["-p", fs_cdb_props.cdb_pwd] );
+      	
+      	log.debug(cmd);
+      } else {
+      	log.warn("Error: Can not find Fullsync properties.");
+      }'
+  ↓jIf [steps.IfStep-1616060358384]: 
+    condition: fs_cdb_props != null
+    ↓Process_execute [steps.ProcessExecStep-1615997952561]: 
+      commandLine: cmd
+      executionDirectory: .//
+    ↓IfIsInThenElse [steps.IsInThenElseStep-1616072729147]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1615997952561
+            - java.lang.String: 
+              - ↑value: ./exit/text()
+      testDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: AND
+                - java.lang.String: 
+                  - ↑value: ^0$
+      ↓jThen [steps.ThenStep-1616072729776]: 
+        ↓Element [steps.XMLElementStep-1616072788621]: 
+          nodeName: isSuccess
+          nodeText: true
+        ↓IfFileExists [steps.IfFileExistStep-1616001368537]: 
+          condition: '".//" + cdb_bkp_file'
+          ↓Element [steps.XMLElementStep-1616001540839]: 
+            nodeName: attachment
+            ↓jAttribute [steps.AttributeStep-1616001578695]: 
+              expression: '"attachment"'
+              nodeName: type
+            ↓jAttribute1 [steps.AttributeStep-1616001612459]: 
+              expression: cdb_bkp_name
+              nodeName: name
+            ↓jAttribute11 [steps.AttributeStep-1616001644799]: 
+              expression: context.getProjectDirectory() + "/" + cdb_bkp_file
+              nodeName: local-url
+            ↓jAttribute2 [steps.AttributeStep-1616001698826]: 
+              expression: '"application/octet-stream"'
+              nodeName: content-type
+      ↓jElse [steps.ElseStep-1616072729778]: 
+        ↓Element [steps.XMLElementStep-1616072803756]: 
+          nodeName: isSuccess
+          nodeText: false
+        ↓Element1 [steps.XMLElementStep-1616073002783]: 
+          nodeName: error
+          nodeText: true
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1615997952561
+                - java.lang.String: 
+                  - ↑value: ./output/text()
+↓cdb_name [variables.RequestableVariable-1615999255642]: 
+  value: 
+↓Test_Case [core.TestCase]: 
+  ↓cdb_name [variables.TestCaseVariable-1615999906892]: 
+    value: vvp

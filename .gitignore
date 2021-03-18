@@ -1,0 +1,12 @@
+/_private/
+/.settings
+/.gradle
+/.project
+
+/DisplayObjects/mobile/*
+!/DisplayObjects/mobile/assets
+
+/oas2/
+/oas3/
+
+/build/
