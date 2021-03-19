@@ -1,4 +1,4 @@
-responseTimeout: 600
+responseTimeout: 3600
 ↓jIf [steps.IfStep-1615999332441]: 
   condition: cdb_name != ""
   ↓Call_Sequence_ResetDBFolder [steps.SequenceStep-1616086412406]: 

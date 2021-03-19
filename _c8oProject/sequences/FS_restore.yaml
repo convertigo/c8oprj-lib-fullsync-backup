@@ -1,4 +1,4 @@
-responseTimeout: 600
+responseTimeout: 3600
 ↓jIf [steps.IfStep-1616002484692]: 
   condition: cdb_file != "" && cdb_name != ""
   ↓Call_Sequence [steps.SequenceStep-1616002484695]: 

@@ -1,0 +1,54 @@
+responseTimeout: 300
+↓jIf [steps.IfStep-1616153353643]: 
+  condition: sourceFile != "" && targetFile != ""
+  ↓uncompressFile [steps.SimpleStep-1616092552037]: 
+    expression: |
+      'isSuccess = false;
+      fileType = "undefined";
+      source = java.nio.file.Paths.get(sourceFile);
+      if(targetFile.indexOf(".//") == 0){
+      	targetFile = context.getProjectDirectory() + targetFile.substring(2);
+      } else if(targetFile.indexOf("./") == 0){
+      	targetFile = context.getProjectDirectory() + "/../" + targetFile.substring(2);
+      }
+      target = java.nio.file.Paths.get(targetFile);
+      type = java.nio.file.Files.probeContentType(source);
+      isJson = type.indexOf("json") != -1;
+      isGzip = type.indexOf("gzip") != -1;
+      
+      log.debug(">>>type:" + type);
+      log.debug(">>>isGzip:" + isGzip);
+      
+      if (isGzip && java.nio.file.Files.exists(source)){
+      	gis = new java.util.zip.GZIPInputStream(new java.io.FileInputStream(source.toFile()));
+      	fos = new java.io.FileOutputStream(target.toFile());
+      	log.debug(">>>valid output file:" + fos.getFD().valid());
+      	buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+      	while((len=gis.read(buffer)) > 0){
+      		fos.write(buffer, 0, len);
+      	}
+      	fos.close();
+      	gis.close();
+      	if (java.nio.file.Files.exists(target)){
+      		isSuccess = true;
+      		fileType = ""+type;
+      	}
+      }
+      
+      if (isJson && java.nio.file.Files.exists(source)){
+      	isSuccess = true;
+      	fileType = ""+type;
+      }'
+↓jElement [steps.ElementStep-1616159018110]: 
+  expression: isSuccess
+  nodeName: isSuccess
+  nodeText: false
+↓jElement1 [steps.ElementStep-1616159041202]: 
+  expression: fileType
+  nodeName: fileType
+  nodeText: undefined
+↓sourceFile [variables.RequestableVariable-1616092581074]: 
+  isFileUpload: true
+  value: 
+↓targetFile [variables.RequestableVariable-1616146930513]: 
+  value: 
