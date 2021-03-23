@@ -1,7 +1,9 @@
 ↓Call_Sequence [steps.SequenceStep-1616523813087]: 
   sourceSequence: lib_FullSyncImportExport.getProperties
 ↓init_vars [steps.SimpleStep-1616086308916]: 
-  expression: cdb_folder = "dbs/";
+  expression: |
+    fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+    cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
 ↓IfDirectoryExists [steps.IfFileExistStep-1616086308919]: 
   condition: '".//" + cdb_folder'
   ↓Delete_Directory [steps.DeleteStep-1616086308922]: 
