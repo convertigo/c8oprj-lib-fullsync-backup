@@ -1,8 +1,55 @@
 responseTimeout: 3600
+↓Input_variables [steps.InputVariablesStep-1616519769219]: 
 ↓jIf [steps.IfStep-1616002484692]: 
   condition: cdb_file != "" && cdb_name != ""
   ↓Call_Sequence [steps.SequenceStep-1616002484695]: 
     sourceSequence: lib_FullSyncImportExport.getProperties
+  ↓computeUnGZpath [steps.SimpleStep-1616520413497]: 
+    expression: |
+      'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+      if (fs_cdb_props != null) {
+      	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
+      	targetFile = ".//" + cdb_folder + cdb_name + ".json";
+      	log.debug(">>>" + targetFile);
+      } else {
+      	log.warn("Error: Can not find Fullsync properties.");
+      }'
+  ↓Call_Sequence1 [steps.SequenceStep-1616519811566]: 
+    sourceSequence: lib_FullSyncImportExport.ungzip
+    ↓sourceFile [variables.StepVariable-1616519811568]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1616519769219
+            - java.lang.String: 
+              - ↑value: ./cdb_file/text()
+      value: 
+    ↓targetFile [variables.StepVariable-1616519811570]: 
+      value: 
+  ↓IfIsIn [steps.IsInStep-1616520644900]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1616519811566
+          - java.lang.String: 
+            - ↑value: ./document/fileType/text()
+    testDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: AND
+              - java.lang.String: 
+                - ↑value: gzip
+    ↓override_cdb_file [steps.SimpleStep-1616520815110]: 
+      expression: cdb_file = targetFile;
   ↓compute_script_params [steps.SimpleStep-1616002484698]: 
     expression: |
       'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");

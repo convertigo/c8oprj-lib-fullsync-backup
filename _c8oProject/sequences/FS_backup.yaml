@@ -11,7 +11,7 @@ responseTimeout: 3600
       if (fs_cdb_props != null) {
       	isGZ = (cdb_gz == "1" || cdb_gz == "true");
       	cdb_bkp_ext = "_backup.json";
-      	cdb_folder = "dbs/";
+      	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
       	cdb_bkp_name = cdb_name + cdb_bkp_ext;
       	cdb_bkp_file = cdb_folder + cdb_bkp_name;
       	cmd = [

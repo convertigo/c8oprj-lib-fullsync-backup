@@ -18,7 +18,8 @@ accessibility: Private
     	"cdb_host": cdb_host,
     	"cdb_port": cdb_port,
     	"cdb_user": cdb_user,
-    	"cdb_pwd": cdb_pwd
+    	"cdb_pwd": cdb_pwd,
+    	"cdb_folderr": "dbs/"
     };'
 ↓Set_object_in_session [steps.SessionSetObjectStep-1615998807570]: 
   key: fs_cdb_props
