@@ -3,7 +3,12 @@ accessibility: Private
   expression: |
     'propsManager = com.twinsoft.convertigo.engine.EnginePropertiesManager;
     
-    cdb_prefix = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PREFIX);
+    try {
+    	cdb_prefix = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PREFIX);
+    } catch(e){
+    	cdb_prefix = "";
+    }
+    
     cdb_url = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_URL);
     cdb_user = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_USERNAME);
     cdb_pwd = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PASSWORD);
@@ -19,7 +24,7 @@ accessibility: Private
     	"cdb_port": cdb_port,
     	"cdb_user": cdb_user,
     	"cdb_pwd": cdb_pwd,
-    	"cdb_folderr": "dbs/"
+    	"cdb_folder": "dbs/"
     };'
 ↓Set_object_in_session [steps.SessionSetObjectStep-1615998807570]: 
   key: fs_cdb_props

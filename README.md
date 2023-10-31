@@ -5,6 +5,33 @@ It is aimed for Cloud or Docker Convertigo Server.\
 It is based on Daniele Bailo's [**couchdb-dump**](https://github.com/danielebailo/couchdb-dump) bash script.\
 The project must be deployed on the target Convertigo Server.
 
+## Studio Installation
+
+1. In your Convertigo Studio use `File->Import->Convertigo->Convertigo Project` and hit the `Next` button
+2. In the dialog `Project remote URL` field, paste the text below:
+   <table>
+     <tr><td>Usage</td><td>Click the copy button</td></tr>
+     <tr><td>To contribute</td><td>
+
+     ```
+     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup.git:branch=8.0.0
+     ```
+     </td></tr>
+     <tr><td>To simply use</td><td>
+
+     ```
+     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup/archive/7.9.0.zip
+     ```
+     </td></tr>
+    </table>
+3. Click the `Finish` button. This will automatically import the __lib_FullSyncGrp__ project
+
+## Server Installation
+
+Deploy project from project context menu 'Deploy' in Studio or deploy project from PROJECTS widget in Administration console.
+
+## Sequences
+
 ### FS_backup
 
 It performs a backup of the given Fullsync database name.

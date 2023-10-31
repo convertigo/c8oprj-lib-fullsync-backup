@@ -1,3 +1,4 @@
+accessibility: Private
 ↓Call_Sequence [steps.SequenceStep-1616523813087]: 
   sourceSequence: lib_FullSyncImportExport.getProperties
 ↓init_vars [steps.SimpleStep-1616086308916]: 
