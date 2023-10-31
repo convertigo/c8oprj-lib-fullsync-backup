@@ -7,28 +7,11 @@ The project must be deployed on the target Convertigo Server.
 
 ## Studio Installation
 
-1. In your Convertigo Studio use `File->Import->Convertigo->Convertigo Project` and hit the `Next` button
-2. In the dialog `Project remote URL` field, paste the text below:
-   <table>
-     <tr><td>Usage</td><td>Click the copy button</td></tr>
-     <tr><td>To contribute</td><td>
-
-     ```
-     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup.git:branch=7.9.0
-     ```
-     </td></tr>
-     <tr><td>To simply use</td><td>
-
-     ```
-     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup/archive/7.9.0.zip
-     ```
-     </td></tr>
-    </table>
-3. Click the `Finish` button. This will automatically import the __lib_FullSyncGrp__ project
+Download lib_FullSyncImportExport.car file and import it from menu File > Import... > Convertigo > Convertigo project
 
 ## Server Installation
 
-Deploy project from project context menu 'Deploy' in Studio or deploy project from PROJECTS widget in Administration console.
+Deploy project from project context menu 'Deploy' in Studio or deploy project lib_FullSyncImportExport.car file from PROJECTS widget in Administration console.
 
 ## Sequences
 
