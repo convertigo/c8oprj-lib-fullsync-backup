@@ -14,7 +14,7 @@ The project must be deployed on the target Convertigo Server.
      <tr><td>To contribute</td><td>
 
      ```
-     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup.git:branch=8.0.0
+     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup.git:branch=7.9.0
      ```
      </td></tr>
      <tr><td>To simply use</td><td>
