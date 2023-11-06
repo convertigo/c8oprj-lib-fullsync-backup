@@ -16,11 +16,12 @@ accessibility: Private
     jUrl = new java.net.URL(cdb_url);
     cdb_host = ""+jUrl.getHost();
     cdb_port = ""+jUrl.getPort();
+    cdb_protocol = ""+jUrl.getProtocol();
     
     fs_cdb_props = {
     	"cdb_prefix": (cdb_prefix != "" ? cdb_prefix+"_" : ""),
     	"cdb_url": cdb_url,
-    	"cdb_host": cdb_host,
+    	"cdb_host": cdb_protocol+"://"+cdb_host,
     	"cdb_port": cdb_port,
     	"cdb_user": cdb_user,
     	"cdb_pwd": cdb_pwd,
