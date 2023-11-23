@@ -68,3 +68,7 @@ If **cdb_name** Fullsync Database already exists on Convertigo Server, it is fir
 ### FS_reset_db_folder
 
 It deletes the Fullsync databases backup folder
+
+### FS_get_db_folder
+
+It gets the file names of the Fullsync databases backup folder content

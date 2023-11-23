@@ -17,6 +17,7 @@ accessibility: Private
     cdb_host = ""+jUrl.getHost();
     cdb_port = ""+jUrl.getPort();
     cdb_protocol = ""+jUrl.getProtocol();
+    prj_url = context.getProjectUrl();
     
     fs_cdb_props = {
     	"cdb_prefix": (cdb_prefix != "" ? cdb_prefix+"_" : ""),
@@ -25,10 +26,11 @@ accessibility: Private
     	"cdb_port": cdb_port,
     	"cdb_user": cdb_user,
     	"cdb_pwd": cdb_pwd,
-    	"cdb_folder": "dbs/"
+    	"cdb_folder": "dbs/",
+    	"prj_url": prj_url
     };
     
-    log.warning(JSON.stringify(fs_cdb_props));'
+    //log.warning(JSON.stringify(fs_cdb_props));'
 ↓Set_object_in_session [steps.SessionSetObjectStep-1615998807570]: 
   key: fs_cdb_props
   value: 

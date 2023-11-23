@@ -1,0 +1,74 @@
+accessibility: Private
+↓Call_Sequence [steps.SequenceStep-1700663406049]: 
+  sourceSequence: lib_FullSyncImportExport.getProperties
+↓init_vars [steps.SimpleStep-1700663406052]: 
+  expression: |
+    fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+    cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
+    prj_url = fs_cdb_props.prj_url;
+↓IfDirectoryExists [steps.IfFileExistStep-1700663406055]: 
+  condition: '".//" + cdb_folder'
+  ↓List_directory [steps.ListDirStep-1700664219899]: 
+    sourceDirectory: '".//" + cdb_folder'
+  ↓Iterator [steps.IteratorStep-1700667934200]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1700664219899
+          - java.lang.String: 
+            - ↑value: ./file
+    ↓jSimpleSource [steps.SimpleSourceStep-1700668312322]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1700667934200
+            - java.lang.String: 
+              - ↑value: ./text()
+      variableName: filename
+    ↓Element [steps.XMLElementStep-1700668026195]: 
+      nodeName: file
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1700667934200
+            - java.lang.String: 
+              - ↑value: ./text()
+      ↓jAttribute [steps.AttributeStep-1700667986640]: 
+        expression: prj_url + cdb_folder + filename
+        nodeName: url
+      ↓Attribute [steps.XMLAttributeStep-1700668199755]: 
+        nodeName: size
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1700667934200
+              - java.lang.String: 
+                - ↑value: ./@size
+      ↓Attribute1 [steps.XMLAttributeStep-1700668223526]: 
+        nodeName: lastModified
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1700667934200
+              - java.lang.String: 
+                - ↑value: ./@lastModified
+      ↓Attribute11 [steps.XMLAttributeStep-1700668257765]: 
+        nodeName: name
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1700667934200
+              - java.lang.String: 
+                - ↑value: ./text()
