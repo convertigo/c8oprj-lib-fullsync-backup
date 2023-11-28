@@ -1,0 +1,74 @@
+responseTimeout: 3600
+↓jIf [steps.IfStep-1700850368621]: 
+  condition: context.httpSession.getAttribute("fs_cdb_props") == null
+  ↓Call_Sequence [steps.SequenceStep-1700850211709]: 
+    sourceSequence: lib_FullSyncImportExport.getProperties
+↓get_databases_name [steps.SimpleStep-1700833974484]: 
+  expression: |
+    'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+    if (fs_cdb_props != null) {
+    	//log.warn("prefix: "+ fs_cdb_props.cdb_prefix);
+    	try {
+    	cdb_prefix = fs_cdb_props.cdb_prefix;
+    	fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
+    	query = new java.util.HashMap();
+    	limit = "1000";
+    	skip = "0";
+    	query.put(''startkey'', ''"'' + cdb_prefix + ''"'');
+    	query.put(''endkey'', ''"'' + cdb_prefix + ''\uffff"'');
+    	query.put(''limit'', "" + limit);
+    	query.put(''skip'', "" + skip);
+    	//log.warning(">>>getalldbs:" + JSON.parse(fsclient.getAllDbs(query)).items);
+    	var all_dbs = JSON.parse(fsclient.getAllDbs(query)).items.map(function(item){
+    			//log.warning(">>>item:" + item);
+    			return cdb_prefix.length ?  (item.split(cdb_prefix))[1] : item
+    		}).filter(function(item){
+    			return item.indexOf("_") != 0
+    		});
+    	//log.warning(">>>"+all_dbs);
+    	} catch(e){
+    		log.warning(">>>Error:" + e);
+    	}
+    } else {
+    	log.warn("Error: Can not find Fullsync properties.");
+    }
+    
+    //log.warning("version: "+com.twinsoft.convertigo.engine.ProductVersion.productVersion);
+    //log.warning("version compare: "+com.twinsoft.convertigo.engine.util.VersionUtils.compare(com.twinsoft.convertigo.engine.ProductVersion.productVersion, "7.5.7"));'
+↓jIterator [steps.SimpleIteratorStep-1700861140673]: 
+  expression: all_dbs
+  ↓jElement [steps.ElementStep-1700861159154]: 
+    expression: item
+    nodeName: db
+    output: false
+  ↓Call_Sequence [steps.SequenceStep-1701091811042]: 
+    sourceSequence: lib_FullSyncImportExport.FS_backup
+    ↓cdb_name [variables.StepVariable-1701091811044]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1700861159154
+            - java.lang.String: 
+              - ↑value: ./text()
+      value: 
+    ↓cdb_gz [variables.StepVariable-1701091811046]: 
+      value: 
+    ↓reset_db_folder [variables.StepVariable-1701091811048]: 
+      value: 0
+  ↓jElement1 [steps.ElementStep-1701170780543]: 
+    expression: item
+    nodeName: db
+    ↓Attribute [steps.XMLAttributeStep-1701170794996]: 
+      nodeName: success
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1701091811042
+            - java.lang.String: 
+              - ↑value: ./document/isSuccess[1]/text()
+↓cdb_gz [variables.RequestableVariable-1700833784459]: 
+  value: 1

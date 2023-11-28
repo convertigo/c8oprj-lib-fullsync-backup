@@ -39,6 +39,7 @@ It performs a backup of the given Fullsync database name.
 - Variables:
     - *cdb_name* (Name of the Fullsync database to backup - String)
     - *cdb_gz* (Compress (.gz) the Fullsync database backup file: 1|true - String)
+    - *reset_db_folder* (Deletes the fs backup folder before making a new fs backup file: 1|true - String)
 
 **.pxml** requester : You will get an XML response with an attachment element that can be used as a Source for other Convertigo sequences:
 
@@ -53,6 +54,17 @@ In case the backup fails, it will return the following:
 ```
 
 **.bin** requester : This will instruct the client to directly download file (Content-Type : "application/octet-stream")
+
+### FS_backup_all
+
+It performs a backup of all the present Fullsync databases.
+
+- Variables:
+    - *cdb_gz* (Compress (.gz) the Fullsync database backup file: 1|true - String)
+
+No direct download.
+All backup files are stored in the backup folder.
+You can have the files list using the **FS_get_db_folder** sequence.
 
 ### FS_restore
 
@@ -71,4 +83,4 @@ It deletes the Fullsync databases backup folder
 
 ### FS_get_db_folder
 
-It gets the file names of the Fullsync databases backup folder content
+It gets the file names of the Fullsync databases backup folder

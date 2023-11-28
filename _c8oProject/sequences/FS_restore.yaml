@@ -2,8 +2,10 @@ responseTimeout: 3600
 ↓Input_variables [steps.InputVariablesStep-1616519769219]: 
 ↓jIf [steps.IfStep-1616002484692]: 
   condition: cdb_file != "" && cdb_name != ""
-  ↓Call_Sequence [steps.SequenceStep-1616002484695]: 
-    sourceSequence: lib_FullSyncImportExport.getProperties
+  ↓jIf1 [steps.IfStep-1701093728623]: 
+    condition: context.httpSession.getAttribute("fs_cdb_props") == null
+    ↓Call_Sequence [steps.SequenceStep-1701093728626]: 
+      sourceSequence: lib_FullSyncImportExport.getProperties
   ↓computeUnGZpath [steps.SimpleStep-1616520413497]: 
     expression: |
       'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");

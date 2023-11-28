@@ -1,13 +1,19 @@
 accessibility: Private
-↓Call_Sequence [steps.SequenceStep-1616523813087]: 
-  sourceSequence: lib_FullSyncImportExport.getProperties
+↓jIf [steps.IfStep-1701093683520]: 
+  condition: context.httpSession.getAttribute("fs_cdb_props") == null
+  ↓Call_Sequence [steps.SequenceStep-1701093683523]: 
+    sourceSequence: lib_FullSyncImportExport.getProperties
 ↓init_vars [steps.SimpleStep-1616086308916]: 
   expression: |
     fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
     cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
-↓IfDirectoryExists [steps.IfFileExistStep-1616086308919]: 
-  condition: '".//" + cdb_folder'
-  ↓Delete_Directory [steps.DeleteStep-1616086308922]: 
-    sourcePath: '".//" + cdb_folder'
+↓jIf_1 [steps.IfStep-1700818100523]: 
+  condition: reset_db_folder == "1" || reset_db_folder == "true"
+  ↓IfDirectoryExists [steps.IfFileExistStep-1616086308919]: 
+    condition: '".//" + cdb_folder'
+    ↓Delete_Directory [steps.DeleteStep-1616086308922]: 
+      sourcePath: '".//" + cdb_folder'
 ↓Create_directory [steps.CreateDirectoryStep-1616086308925]: 
   destinationPath: '".//" + cdb_folder'
+↓reset_db_folder [variables.RequestableVariable-1700820077999]: 
+  value: 1

@@ -3,8 +3,12 @@ responseTimeout: 3600
   condition: cdb_name != ""
   ↓Call_Sequence_ResetDBFolder [steps.SequenceStep-1616086412406]: 
     sourceSequence: lib_FullSyncImportExport.FS_reset_db_folder
-  ↓Call_Sequence_getProperties [steps.SequenceStep-1615994574365]: 
-    sourceSequence: lib_FullSyncImportExport.getProperties
+    ↓reset_db_folder [variables.StepVariable-1700820088168]: 
+      value: 1
+  ↓jIf1 [steps.IfStep-1701093620308]: 
+    condition: context.httpSession.getAttribute("fs_cdb_props") == null
+    ↓Call_Sequence [steps.SequenceStep-1701093620311]: 
+      sourceSequence: lib_FullSyncImportExport.getProperties
   ↓compute_script_params [steps.SimpleStep-1615995852193]: 
     expression: |
       'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
@@ -93,6 +97,8 @@ responseTimeout: 3600
   value: 
 ↓cdb_gz [variables.RequestableVariable-1616086650067]: 
   value: 
+↓reset_db_folder [variables.RequestableVariable-1700818079911]: 
+  value: 1
 ↓Test_Case [core.TestCase]: 
   ↓cdb_name [variables.TestCaseVariable-1615999906892]: 
     value: vvp
