@@ -12,6 +12,7 @@ The project must be deployed on the target Convertigo Server.
 For more technical informations : [documentation](./project.md)
 
 - [Installation](#installation)
+- [Secret Symbol](#secret-symbol)
 - [Sequences](#sequences)
     - [FS_backup](#fs_backup)
     - [FS_backup_all](#fs_backup_all)
@@ -47,10 +48,19 @@ For more technical informations : [documentation](./project.md)
     </table>
 3. Click the `Finish` button. This will automatically import the __lib_FullSyncImportExport__ project
 
+## Secret Symbol
+
+The project expects a secret project symbol named `${lib_FullSyncImportExport.secretkey.secret}` on the target Convertigo server.
+Each sequence also exposes a request variable named `secret`.
+At runtime, the received variable is compared with the symbol value.
+If the value is missing or invalid, the sequence returns a `403 Forbidden` error structure.
+Internal sequence calls already propagate the `secret` variable automatically.
 
 ## Sequences
 
 ### FS_backup
+
+Creates a backup file for one FullSync database and can optionally compress it as `.gz`.
 
 **variables**
 
@@ -74,6 +84,8 @@ For more technical informations : [documentation](./project.md)
 
 ### FS_backup_all
 
+Backs up all available FullSync databases into the server backup folder.
+
 **variables**
 
 <table>
@@ -90,6 +102,8 @@ For more technical informations : [documentation](./project.md)
 
 ### FS_get_db_folder
 
+Lists the backup files currently available in the backup folder.
+
 **variables**
 
 <table>
@@ -102,6 +116,8 @@ For more technical informations : [documentation](./project.md)
 </table>
 
 ### FS_reset_db_folder
+
+Clears and recreates the backup folder before a new backup run.
 
 **variables**
 
@@ -118,6 +134,8 @@ For more technical informations : [documentation](./project.md)
 </table>
 
 ### FS_restore
+
+Restores one FullSync database from a JSON or GZip backup file.
 
 **variables**
 
@@ -138,6 +156,8 @@ For more technical informations : [documentation](./project.md)
 
 ### getProperties
 
+Loads the FullSync/CouchDB server settings from Convertigo server properties and stores them in HTTP session.
+
 **variables**
 
 <table>
@@ -150,6 +170,8 @@ For more technical informations : [documentation](./project.md)
 </table>
 
 ### ungzip
+
+Detects whether an input file is already JSON or GZip and decompresses it when required.
 
 **variables**
 
@@ -167,5 +189,4 @@ For more technical informations : [documentation](./project.md)
 <td>targetFile</td><td></td>
 </tr>
 </table>
-
 
