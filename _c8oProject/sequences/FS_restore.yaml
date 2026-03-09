@@ -1,3 +1,4 @@
+comment: Restores one FullSync database from a JSON or GZip backup file.
 responseTimeout: 3600
 ↓c8osecret [steps.XMLElementStep-1773075669143]: 
   nodeName: xmlc8osecret
@@ -150,11 +151,14 @@ responseTimeout: 3600
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓cdb_name [variables.RequestableVariable-1616002484722]: 
+  comment: Name of the FullSync database to restore.
   value: 
 ↓cdb_file [variables.RequestableVariable-1616002700241]: 
+  comment: Uploaded backup file to restore, in JSON or GZip format.
   isFileUpload: true
   value: 
 ↓secret [variables.RequestableVariable-1773075669291]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

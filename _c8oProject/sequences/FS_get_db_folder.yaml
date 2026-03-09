@@ -1,4 +1,5 @@
 accessibility: Private
+comment: Lists the backup files currently available in the backup folder.
 ↓c8osecret [steps.XMLElementStep-1773075663919]: 
   nodeName: xmlc8osecret
   nodeText: ${lib_FullSyncImportExport.secretkey.secret}
@@ -117,6 +118,7 @@ accessibility: Private
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓secret [variables.RequestableVariable-1773075664073]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

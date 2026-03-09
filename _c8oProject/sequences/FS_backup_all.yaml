@@ -1,3 +1,4 @@
+comment: Backs up all available FullSync databases into the server backup folder.
 responseTimeout: 3600
 ↓c8osecret [steps.XMLElementStep-1773075661157]: 
   nodeName: xmlc8osecret
@@ -108,8 +109,10 @@ responseTimeout: 3600
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓cdb_gz [variables.RequestableVariable-1700833784459]: 
+  comment: Set to 1 or true to create compressed .gz backup files.
   value: 1
 ↓secret [variables.RequestableVariable-1773075661341]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

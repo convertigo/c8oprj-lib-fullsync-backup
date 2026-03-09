@@ -48,19 +48,21 @@ For more technical informations : [documentation](./project.md)
     </table>
 3. Click the `Finish` button. This will automatically import the __lib_FullSyncImportExport__ project
 
+
 ## Secret Symbol
 
-The project expects a secret project symbol named `${lib_FullSyncImportExport.secretkey.secret}` on the target Convertigo server.
-Each sequence also exposes a request variable named `secret`.
+The project expects a secret project symbol named <code>${lib_FullSyncImportExport.secretkey.secret}</code> on the target Convertigo server.
+Each sequence also exposes a request variable named <code>secret</code>.
 At runtime, the received variable is compared with the symbol value.
-If the value is missing or invalid, the sequence returns a `403 Forbidden` error structure.
-Internal sequence calls already propagate the `secret` variable automatically.
+If the value is missing or invalid, the sequence returns a <code>403 Forbidden</code> error structure.
+Internal sequence calls already propagate the <code>secret</code> variable automatically.
+
 
 ## Sequences
 
 ### FS_backup
 
-Creates a backup file for one FullSync database and can optionally compress it as `.gz`.
+Creates a backup file for one FullSync database and can optionally compress it as .gz.
 
 **variables**
 
@@ -69,16 +71,16 @@ Creates a backup file for one FullSync database and can optionally compress it a
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>cdb_gz</td><td></td>
+<td>cdb_gz</td><td>Set to 1 or true to create a compressed .gz backup file.</td>
 </tr>
 <tr>
-<td>cdb_name</td><td></td>
+<td>cdb_name</td><td>Name of the FullSync database to back up.</td>
 </tr>
 <tr>
-<td>reset_db_folder</td><td></td>
+<td>reset_db_folder</td><td>Set to 1 or true to clear the backup folder before creating the new backup.</td>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 </table>
 
@@ -93,10 +95,10 @@ Backs up all available FullSync databases into the server backup folder.
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>cdb_gz</td><td></td>
+<td>cdb_gz</td><td>Set to 1 or true to create compressed .gz backup files.</td>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 </table>
 
@@ -111,7 +113,7 @@ Lists the backup files currently available in the backup folder.
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 </table>
 
@@ -126,10 +128,10 @@ Clears and recreates the backup folder before a new backup run.
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>reset_db_folder</td><td></td>
+<td>reset_db_folder</td><td>Set to 1 or true to delete and recreate the backup folder.</td>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 </table>
 
@@ -144,13 +146,13 @@ Restores one FullSync database from a JSON or GZip backup file.
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>cdb_file</td><td></td>
+<td>cdb_file</td><td>Uploaded backup file to restore, in JSON or GZip format.</td>
 </tr>
 <tr>
-<td>cdb_name</td><td></td>
+<td>cdb_name</td><td>Name of the FullSync database to restore.</td>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 </table>
 
@@ -165,7 +167,7 @@ Loads the FullSync/CouchDB server settings from Convertigo server properties and
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 </table>
 
@@ -180,13 +182,14 @@ Detects whether an input file is already JSON or GZip and decompresses it when r
 <th>name</th><th>comment</th>
 </tr>
 <tr>
-<td>secret</td><td></td>
+<td>secret</td><td>Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.</td>
 </tr>
 <tr>
-<td>sourceFile</td><td></td>
+<td>sourceFile</td><td>Source backup file path, in JSON or GZip format.</td>
 </tr>
 <tr>
-<td>targetFile</td><td></td>
+<td>targetFile</td><td>Target JSON file path used when the source file must be decompressed.</td>
 </tr>
 </table>
+
 

@@ -1,4 +1,5 @@
 accessibility: Private
+comment: Detects whether an input file is already JSON or GZip and decompresses it when required.
 responseTimeout: 300
 ↓c8osecret [steps.XMLElementStep-1773075674447]: 
   nodeName: xmlc8osecret
@@ -86,11 +87,14 @@ responseTimeout: 300
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓sourceFile [variables.RequestableVariable-1616092581074]: 
+  comment: Source backup file path, in JSON or GZip format.
   isFileUpload: true
   value: 
 ↓targetFile [variables.RequestableVariable-1616146930513]: 
+  comment: Target JSON file path used when the source file must be decompressed.
   value: 
 ↓secret [variables.RequestableVariable-1773075674589]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

@@ -1,3 +1,4 @@
+comment: Creates a backup file for one FullSync database and can optionally compress it as .gz.
 responseTimeout: 3600
 ↓c8osecret [steps.XMLElementStep-1773074695517]: 
   nodeName: xmlc8osecret
@@ -133,12 +134,16 @@ responseTimeout: 3600
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓cdb_name [variables.RequestableVariable-1615999255642]: 
+  comment: Name of the FullSync database to back up.
   value: 
 ↓cdb_gz [variables.RequestableVariable-1616086650067]: 
+  comment: Set to 1 or true to create a compressed .gz backup file.
   value: 
 ↓reset_db_folder [variables.RequestableVariable-1700818079911]: 
+  comment: Set to 1 or true to clear the backup folder before creating the new backup.
   value: 1
 ↓secret [variables.RequestableVariable-1773074595926]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

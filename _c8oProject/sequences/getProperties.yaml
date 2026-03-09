@@ -1,4 +1,5 @@
 accessibility: Private
+comment: Loads the FullSync/CouchDB server settings from Convertigo server properties and stores them in HTTP session.
 ↓c8osecret [steps.XMLElementStep-1773075673084]: 
   nodeName: xmlc8osecret
   nodeText: ${lib_FullSyncImportExport.secretkey.secret}
@@ -77,6 +78,7 @@ accessibility: Private
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓secret [variables.RequestableVariable-1773075673265]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

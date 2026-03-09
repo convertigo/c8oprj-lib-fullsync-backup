@@ -1,4 +1,5 @@
 accessibility: Private
+comment: Clears and recreates the backup folder before a new backup run.
 ↓c8osecret [steps.XMLElementStep-1773075667114]: 
   nodeName: xmlc8osecret
   nodeText: ${lib_FullSyncImportExport.secretkey.secret}
@@ -54,8 +55,10 @@ accessibility: Private
             - ↑mode: PLAIN
             - →→: Forbidden
 ↓reset_db_folder [variables.RequestableVariable-1700820077999]: 
+  comment: Set to 1 or true to delete and recreate the backup folder.
   value: 1
 ↓secret [variables.RequestableVariable-1773075667263]: 
+  comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.
   value: 
     - ↑ciphered: true
     - ↑traceable: false

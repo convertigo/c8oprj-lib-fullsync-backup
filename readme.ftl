@@ -90,28 +90,6 @@
   <#return value>
 </#function>
 
-<#-- sequencePurpose: short functional description for README -->
-<#function sequencePurpose name>
-  <#switch name>
-    <#case "FS_backup">
-      <#return "Creates a backup file for one FullSync database and can optionally compress it as `.gz`." />
-    <#case "FS_backup_all">
-      <#return "Backs up all available FullSync databases into the server backup folder." />
-    <#case "FS_get_db_folder">
-      <#return "Lists the backup files currently available in the backup folder." />
-    <#case "FS_reset_db_folder">
-      <#return "Clears and recreates the backup folder before a new backup run." />
-    <#case "FS_restore">
-      <#return "Restores one FullSync database from a JSON or GZip backup file." />
-    <#case "getProperties">
-      <#return "Loads the FullSync/CouchDB server settings from Convertigo server properties and stores them in HTTP session." />
-    <#case "ungzip">
-      <#return "Detects whether an input file is already JSON or GZip and decompresses it when required." />
-    <#default>
-      <#return "" />
-  </#switch>
-</#function>
-
 <#-- MACROS -->
 <#-- header: generates a header with given text as heading and add it to TOC with its anchor link -->
 <#macro header toc anchors heading text>
@@ -236,11 +214,10 @@ Internal sequence calls already propagate the <code>secret</code> variable autom
     	<@comment text=reference.comment />
   	</#list>
 </#if>
-<#if on("sequences") && has(project,"sequences")>
+	<#if on("sequences") && has(project,"sequences")>
   	<@header toc=toc anchors=anchors heading="##" text=help("sequences") />
   	<#list project.sequences as sequence>
     	<@header toc=toc anchors=anchors heading="###" text=sequence.label />
-    	<@comment text=sequencePurpose(sequence.label) />
     	<@comment text=sequence.comment />
     	<#if on("variables") && has(sequence,"variables")>
       		<@table title="**"+help("variables")+"**" headers=["name","comment"] rows=sequence.variables />

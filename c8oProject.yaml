@@ -5,7 +5,7 @@
     It is aimed for Cloud or Docker Convertigo Server.\
     It is based on Daniele Bailo's [**couchdb-dump**](https://github.com/danielebailo/couchdb-dump) bash script.\
     The project must be deployed on the target Convertigo Server.
-  version: 8.0.0.0
+  version: 8.0.0.1
   ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
   ↓FS_backup [sequences.GenericSequence]: 🗏 sequences/FS_backup.yaml
   ↓FS_backup_all [sequences.GenericSequence]: 🗏 sequences/FS_backup_all.yaml
