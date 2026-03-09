@@ -1,74 +1,117 @@
 responseTimeout: 3600
-↓jIf [steps.IfStep-1700850368621]: 
-  condition: context.httpSession.getAttribute("fs_cdb_props") == null
-  ↓Call_Sequence [steps.SequenceStep-1700850211709]: 
-    sourceSequence: lib_FullSyncImportExport.getProperties
-↓get_databases_name [steps.SimpleStep-1700833974484]: 
-  expression: |
-    'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
-    if (fs_cdb_props != null) {
-    	//log.warn("prefix: "+ fs_cdb_props.cdb_prefix);
-    	try {
-    	cdb_prefix = fs_cdb_props.cdb_prefix;
-    	fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
-    	query = new java.util.HashMap();
-    	limit = "1000";
-    	skip = "0";
-    	query.put(''startkey'', ''"'' + cdb_prefix + ''"'');
-    	query.put(''endkey'', ''"'' + cdb_prefix + ''\uffff"'');
-    	query.put(''limit'', "" + limit);
-    	query.put(''skip'', "" + skip);
-    	//log.warning(">>>getalldbs:" + JSON.parse(fsclient.getAllDbs(query)).items);
-    	var all_dbs = JSON.parse(fsclient.getAllDbs(query)).items.map(function(item){
-    			//log.warning(">>>item:" + item);
-    			return cdb_prefix.length ?  (item.split(cdb_prefix))[1] : item
-    		}).filter(function(item){
-    			return item.indexOf("_") != 0
-    		});
-    	//log.warning(">>>"+all_dbs);
-    	} catch(e){
-    		log.warning(">>>Error:" + e);
-    	}
-    } else {
-    	log.warn("Error: Can not find Fullsync properties.");
-    }
-    
-    //log.warning("version: "+com.twinsoft.convertigo.engine.ProductVersion.productVersion);
-    //log.warning("version compare: "+com.twinsoft.convertigo.engine.util.VersionUtils.compare(com.twinsoft.convertigo.engine.ProductVersion.productVersion, "7.5.7"));'
-↓jIterator [steps.SimpleIteratorStep-1700861140673]: 
-  expression: all_dbs
-  ↓jElement [steps.ElementStep-1700861159154]: 
-    expression: item
-    nodeName: db
-    output: false
-  ↓Call_Sequence [steps.SequenceStep-1701091811042]: 
-    sourceSequence: lib_FullSyncImportExport.FS_backup
-    ↓cdb_name [variables.StepVariable-1701091811044]: 
-      sourceDefinition: 
+↓c8osecret [steps.XMLElementStep-1773075661157]: 
+  nodeName: xmlc8osecret
+  nodeText: ${lib_FullSyncImportExport.secretkey.secret}
+  output: false
+↓myVariable [steps.SimpleSourceStep-1773075661210]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1773075661157
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: c8osecret
+↓jIfThenElse [steps.IfThenElseStep-1773075661283]: 
+  condition: c8osecret == secret
+  ↓jThen [steps.ThenStep-1773075661649]: 
+    ↓jIf [steps.IfStep-1773075661824]: 
+      condition: context.httpSession.getAttribute("fs_cdb_props") == null
+      ↓Call_Sequence [steps.SequenceStep-1773075662042]: 
+        sourceSequence: lib_FullSyncImportExport.getProperties
+        ↓secret [variables.StepVariable-1773075662182]: 
+    ↓get_databases_name [steps.SimpleStep-1773075661863]: 
+      expression: |
+        'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+        if (fs_cdb_props != null) {
+        	//log.warn("prefix: "+ fs_cdb_props.cdb_prefix);
+        	try {
+        	cdb_prefix = fs_cdb_props.cdb_prefix;
+        	fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
+        	query = new java.util.HashMap();
+        	limit = "1000";
+        	skip = "0";
+        	query.put(''startkey'', ''"'' + cdb_prefix + ''"'');
+        	query.put(''endkey'', ''"'' + cdb_prefix + ''\uffff"'');
+        	query.put(''limit'', "" + limit);
+        	query.put(''skip'', "" + skip);
+        	//log.warning(">>>getalldbs:" + JSON.parse(fsclient.getAllDbs(query)).items);
+        	var all_dbs = JSON.parse(fsclient.getAllDbs(query)).items.map(function(item){
+        			//log.warning(">>>item:" + item);
+        			return cdb_prefix.length ?  (item.split(cdb_prefix))[1] : item
+        		}).filter(function(item){
+        			return item.indexOf("_") != 0
+        		});
+        	//log.warning(">>>"+all_dbs);
+        	} catch(e){
+        		log.warning(">>>Error:" + e);
+        	}
+        } else {
+        	log.warn("Error: Can not find Fullsync properties.");
+        }
+        
+        //log.warning("version: "+com.twinsoft.convertigo.engine.ProductVersion.productVersion);
+        //log.warning("version compare: "+com.twinsoft.convertigo.engine.util.VersionUtils.compare(com.twinsoft.convertigo.engine.ProductVersion.productVersion, "7.5.7"));'
+    ↓jIterator [steps.SimpleIteratorStep-1773075661919]: 
+      expression: all_dbs
+      ↓jElement [steps.ElementStep-1773075662401]: 
+        expression: item
+        nodeName: db
+        output: false
+      ↓Call_Sequence [steps.SequenceStep-1773075662437]: 
+        sourceSequence: lib_FullSyncImportExport.FS_backup
+        ↓cdb_name [variables.StepVariable-1773075662734]: 
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1700861159154
+                - java.lang.String: 
+                  - ↑value: ./text()
+        ↓cdb_gz [variables.StepVariable-1773075662776]: 
+        ↓secret [variables.StepVariable-1773075662824]: 
+        ↓reset_db_folder [variables.StepVariable-1773075662894]: 
+          value: 0.0
+      ↓jElement1 [steps.ElementStep-1773075662481]: 
+        expression: item
+        nodeName: db
+        ↓Attribute [steps.XMLAttributeStep-1773075663353]: 
+          nodeName: success
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1701091811042
+                - java.lang.String: 
+                  - ↑value: ./document/isSuccess[1]/text()
+  ↓jElse [steps.ElseStep-1773075661684]: 
+    ↓Error_structure [steps.XMLErrorStep-1773075663571]: 
+      code: 
         - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1700861159154
-            - java.lang.String: 
-              - ↑value: ./text()
-      value: 
-    ↓cdb_gz [variables.StepVariable-1701091811046]: 
-      value: 
-    ↓reset_db_folder [variables.StepVariable-1701091811048]: 
-      value: 0
-  ↓jElement1 [steps.ElementStep-1701170780543]: 
-    expression: item
-    nodeName: db
-    ↓Attribute [steps.XMLAttributeStep-1701170794996]: 
-      nodeName: success
-      sourceDefinition: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: 403
+      details: 
         - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1701091811042
-            - java.lang.String: 
-              - ↑value: ./document/isSuccess[1]/text()
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Invalid or missing secret parameter.
+      message: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Forbidden
 ↓cdb_gz [variables.RequestableVariable-1700833784459]: 
   value: 1
+↓secret [variables.RequestableVariable-1773075661341]: 
+  value: 
+    - ↑ciphered: true
+    - ↑traceable: false
+    - →→: xd8e180806a1c1d83a6255212121ab827
+  visibility: '-1'

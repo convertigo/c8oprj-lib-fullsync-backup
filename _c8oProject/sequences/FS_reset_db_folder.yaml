@@ -1,19 +1,63 @@
 accessibility: Private
-↓jIf [steps.IfStep-1701093683520]: 
-  condition: context.httpSession.getAttribute("fs_cdb_props") == null
-  ↓Call_Sequence [steps.SequenceStep-1701093683523]: 
-    sourceSequence: lib_FullSyncImportExport.getProperties
-↓init_vars [steps.SimpleStep-1616086308916]: 
-  expression: |
-    fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
-    cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
-↓jIf_1 [steps.IfStep-1700818100523]: 
-  condition: reset_db_folder == "1" || reset_db_folder == "true"
-  ↓IfDirectoryExists [steps.IfFileExistStep-1616086308919]: 
-    condition: '".//" + cdb_folder'
-    ↓Delete_Directory [steps.DeleteStep-1616086308922]: 
-      sourcePath: '".//" + cdb_folder'
-↓Create_directory [steps.CreateDirectoryStep-1616086308925]: 
-  destinationPath: '".//" + cdb_folder'
+↓c8osecret [steps.XMLElementStep-1773075667114]: 
+  nodeName: xmlc8osecret
+  nodeText: ${lib_FullSyncImportExport.secretkey.secret}
+  output: false
+↓myVariable [steps.SimpleSourceStep-1773075667154]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1773075667114
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: c8osecret
+↓jIfThenElse [steps.IfThenElseStep-1773075667199]: 
+  condition: c8osecret == secret
+  ↓jThen [steps.ThenStep-1773075667576]: 
+    ↓jIf [steps.IfStep-1773075667759]: 
+      condition: context.httpSession.getAttribute("fs_cdb_props") == null
+      ↓Call_Sequence [steps.SequenceStep-1773075668037]: 
+        sourceSequence: lib_FullSyncImportExport.getProperties
+        ↓secret [variables.StepVariable-1773075668148]: 
+    ↓init_vars [steps.SimpleStep-1773075667797]: 
+      expression: |
+        fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+        cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
+    ↓jIf_1 [steps.IfStep-1773075667855]: 
+      condition: reset_db_folder == "1" || reset_db_folder == "true"
+      ↓IfDirectoryExists [steps.IfFileExistStep-1773075668371]: 
+        condition: '".//" + cdb_folder'
+        ↓Delete_Directory [steps.DeleteStep-1773075668501]: 
+          sourcePath: '".//" + cdb_folder'
+    ↓Create_directory [steps.CreateDirectoryStep-1773075667913]: 
+      destinationPath: '".//" + cdb_folder'
+  ↓jElse [steps.ElseStep-1773075667613]: 
+    ↓Error_structure [steps.XMLErrorStep-1773075668796]: 
+      code: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: 403
+      details: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Invalid or missing secret parameter.
+      message: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Forbidden
 ↓reset_db_folder [variables.RequestableVariable-1700820077999]: 
   value: 1
+↓secret [variables.RequestableVariable-1773075667263]: 
+  value: 
+    - ↑ciphered: true
+    - ↑traceable: false
+    - →→: xd8e180806a1c1d83a6255212121ab827
+  visibility: '-1'

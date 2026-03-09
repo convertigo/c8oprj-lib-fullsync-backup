@@ -1,7 +1,11 @@
-↑convertigo: 7.9.0.m006
+↑convertigo: 8.0.0.m006
 ↓lib_FullSyncImportExport [core.Project]: 
-  comment: Mashup Sequencer project
-  version: 1.9
+  comment: |
+    This project performs backup or restore of Convertigo Fullsync Databases.\
+    It is aimed for Cloud or Docker Convertigo Server.\
+    It is based on Daniele Bailo's [**couchdb-dump**](https://github.com/danielebailo/couchdb-dump) bash script.\
+    The project must be deployed on the target Convertigo Server.
+  version: 8.0.0.0
   ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
   ↓FS_backup [sequences.GenericSequence]: 🗏 sequences/FS_backup.yaml
   ↓FS_backup_all [sequences.GenericSequence]: 🗏 sequences/FS_backup_all.yaml

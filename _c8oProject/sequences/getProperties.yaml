@@ -1,41 +1,84 @@
 accessibility: Private
-↓getProperties [steps.SimpleStep-1615992349057]: 
-  expression: |
-    'propsManager = com.twinsoft.convertigo.engine.EnginePropertiesManager;
-    
-    try {
-    	cdb_prefix = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PREFIX);
-    } catch(e){
-    	cdb_prefix = "";
-    }
-    
-    cdb_url = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_URL);
-    cdb_user = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_USERNAME);
-    cdb_pwd = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PASSWORD);
-    
-    jUrl = new java.net.URL(cdb_url);
-    cdb_host = ""+jUrl.getHost();
-    cdb_port = ""+jUrl.getPort();
-    cdb_protocol = ""+jUrl.getProtocol();
-    prj_url = context.getProjectUrl();
-    
-    fs_cdb_props = {
-    	"cdb_prefix": (cdb_prefix != "" ? cdb_prefix+"_" : ""),
-    	"cdb_url": cdb_url,
-    	"cdb_host": cdb_protocol+"://"+cdb_host,
-    	"cdb_port": cdb_port,
-    	"cdb_user": cdb_user,
-    	"cdb_pwd": cdb_pwd,
-    	"cdb_folder": "dbs/",
-    	"prj_url": prj_url
-    };
-    
-    //log.warning(JSON.stringify(fs_cdb_props));'
-↓Set_object_in_session [steps.SessionSetObjectStep-1615998807570]: 
-  key: fs_cdb_props
-  value: 
+↓c8osecret [steps.XMLElementStep-1773075673084]: 
+  nodeName: xmlc8osecret
+  nodeText: ${lib_FullSyncImportExport.secretkey.secret}
+  output: false
+↓myVariable [steps.SimpleSourceStep-1773075673125]: 
+  sourceDefinition: 
     - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-      - SmartType: 
-        - ↑mode: JS
-        - →→: fs_cdb_props
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1773075673084
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: c8osecret
+↓jIfThenElse [steps.IfThenElseStep-1773075673214]: 
+  condition: c8osecret == secret
+  ↓jThen [steps.ThenStep-1773075673571]: 
+    ↓getProperties [steps.SimpleStep-1773075673774]: 
+      expression: |
+        'propsManager = com.twinsoft.convertigo.engine.EnginePropertiesManager;
+        
+        try {
+        	cdb_prefix = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PREFIX);
+        } catch(e){
+        	cdb_prefix = "";
+        }
+        
+        cdb_url = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_URL);
+        cdb_user = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_USERNAME);
+        cdb_pwd = ""+propsManager.getProperty(propsManager.PropertyName.FULLSYNC_COUCH_PASSWORD);
+        
+        jUrl = new java.net.URL(cdb_url);
+        cdb_host = ""+jUrl.getHost();
+        cdb_port = ""+jUrl.getPort();
+        cdb_protocol = ""+jUrl.getProtocol();
+        prj_url = context.getProjectUrl();
+        
+        fs_cdb_props = {
+        	"cdb_prefix": (cdb_prefix != "" ? cdb_prefix+"_" : ""),
+        	"cdb_url": cdb_url,
+        	"cdb_host": cdb_protocol+"://"+cdb_host,
+        	"cdb_port": cdb_port,
+        	"cdb_user": cdb_user,
+        	"cdb_pwd": cdb_pwd,
+        	"cdb_folder": "dbs/",
+        	"prj_url": prj_url
+        };
+        
+        //log.warning(JSON.stringify(fs_cdb_props));'
+    ↓Set_object_in_session [steps.SessionSetObjectStep-1773075673828]: 
+      key: fs_cdb_props
+      value: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: JS
+            - →→: fs_cdb_props
+  ↓jElse [steps.ElseStep-1773075673607]: 
+    ↓Error_structure [steps.XMLErrorStep-1773075674091]: 
+      code: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: 403
+      details: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Invalid or missing secret parameter.
+      message: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Forbidden
+↓secret [variables.RequestableVariable-1773075673265]: 
+  value: 
+    - ↑ciphered: true
+    - ↑traceable: false
+    - →→: xd8e180806a1c1d83a6255212121ab827
+  visibility: '-1'

@@ -1,55 +1,98 @@
 accessibility: Private
 responseTimeout: 300
-↓jIf [steps.IfStep-1616153353643]: 
-  condition: sourceFile != "" && targetFile != ""
-  ↓uncompressFile [steps.SimpleStep-1616092552037]: 
-    expression: |
-      'isSuccess = false;
-      fileType = "undefined";
-      source = java.nio.file.Paths.get(sourceFile);
-      if(targetFile.indexOf(".//") == 0){
-      	targetFile = context.getProjectDirectory() + targetFile.substring(2);
-      } else if(targetFile.indexOf("./") == 0){
-      	targetFile = context.getProjectDirectory() + "/../" + targetFile.substring(2);
-      }
-      target = java.nio.file.Paths.get(targetFile);
-      type = java.nio.file.Files.probeContentType(source);
-      isJson = type.indexOf("json") != -1;
-      isGzip = type.indexOf("gzip") != -1;
-      
-      log.debug(">>>type:" + type);
-      log.debug(">>>isGzip:" + isGzip);
-      
-      if (isGzip && java.nio.file.Files.exists(source)){
-      	gis = new java.util.zip.GZIPInputStream(new java.io.FileInputStream(source.toFile()));
-      	fos = new java.io.FileOutputStream(target.toFile());
-      	log.debug(">>>valid output file:" + fos.getFD().valid());
-      	buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
-      	while((len=gis.read(buffer)) > 0){
-      		fos.write(buffer, 0, len);
-      	}
-      	fos.close();
-      	gis.close();
-      	if (java.nio.file.Files.exists(target)){
-      		isSuccess = true;
-      		fileType = ""+type;
-      	}
-      }
-      
-      if (isJson && java.nio.file.Files.exists(source)){
-      	isSuccess = true;
-      	fileType = ""+type;
-      }'
-↓jElement [steps.ElementStep-1616159018110]: 
-  expression: isSuccess
-  nodeName: isSuccess
-  nodeText: false
-↓jElement1 [steps.ElementStep-1616159041202]: 
-  expression: fileType
-  nodeName: fileType
-  nodeText: undefined
+↓c8osecret [steps.XMLElementStep-1773075674447]: 
+  nodeName: xmlc8osecret
+  nodeText: ${lib_FullSyncImportExport.secretkey.secret}
+  output: false
+↓myVariable [steps.SimpleSourceStep-1773075674487]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1773075674447
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: c8osecret
+↓jIfThenElse [steps.IfThenElseStep-1773075674535]: 
+  condition: c8osecret == secret
+  ↓jThen [steps.ThenStep-1773075674902]: 
+    ↓jIf [steps.IfStep-1773075675100]: 
+      condition: sourceFile != "" && targetFile != ""
+      ↓uncompressFile [steps.SimpleStep-1773075675351]: 
+        expression: |
+          'isSuccess = false;
+          fileType = "undefined";
+          source = java.nio.file.Paths.get(sourceFile);
+          if(targetFile.indexOf(".//") == 0){
+          	targetFile = context.getProjectDirectory() + targetFile.substring(2);
+          } else if(targetFile.indexOf("./") == 0){
+          	targetFile = context.getProjectDirectory() + "/../" + targetFile.substring(2);
+          }
+          target = java.nio.file.Paths.get(targetFile);
+          type = java.nio.file.Files.probeContentType(source);
+          isJson = type.indexOf("json") != -1;
+          isGzip = type.indexOf("gzip") != -1;
+          
+          log.debug(">>>type:" + type);
+          log.debug(">>>isGzip:" + isGzip);
+          
+          if (isGzip && java.nio.file.Files.exists(source)){
+          	gis = new java.util.zip.GZIPInputStream(new java.io.FileInputStream(source.toFile()));
+          	fos = new java.io.FileOutputStream(target.toFile());
+          	log.debug(">>>valid output file:" + fos.getFD().valid());
+          	buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+          	while((len=gis.read(buffer)) > 0){
+          		fos.write(buffer, 0, len);
+          	}
+          	fos.close();
+          	gis.close();
+          	if (java.nio.file.Files.exists(target)){
+          		isSuccess = true;
+          		fileType = ""+type;
+          	}
+          }
+          
+          if (isJson && java.nio.file.Files.exists(source)){
+          	isSuccess = true;
+          	fileType = ""+type;
+          }'
+    ↓jElement [steps.ElementStep-1773075675140]: 
+      expression: isSuccess
+      nodeName: isSuccess
+      nodeText: false
+    ↓jElement1 [steps.ElementStep-1773075675200]: 
+      expression: fileType
+      nodeName: fileType
+      nodeText: undefined
+  ↓jElse [steps.ElseStep-1773075674939]: 
+    ↓Error_structure [steps.XMLErrorStep-1773075675765]: 
+      code: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: 403
+      details: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Invalid or missing secret parameter.
+      message: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Forbidden
 ↓sourceFile [variables.RequestableVariable-1616092581074]: 
   isFileUpload: true
   value: 
 ↓targetFile [variables.RequestableVariable-1616146930513]: 
   value: 
+↓secret [variables.RequestableVariable-1773075674589]: 
+  value: 
+    - ↑ciphered: true
+    - ↑traceable: false
+    - →→: xd8e180806a1c1d83a6255212121ab827
+  visibility: '-1'

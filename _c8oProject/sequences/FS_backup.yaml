@@ -1,90 +1,63 @@
 responseTimeout: 3600
-↓jIf [steps.IfStep-1615999332441]: 
-  condition: cdb_name != ""
-  ↓Call_Sequence_ResetDBFolder [steps.SequenceStep-1616086412406]: 
-    sourceSequence: lib_FullSyncImportExport.FS_reset_db_folder
-    ↓reset_db_folder [variables.StepVariable-1700820088168]: 
-      value: 1
-  ↓jIf1 [steps.IfStep-1701093620308]: 
-    condition: context.httpSession.getAttribute("fs_cdb_props") == null
-    ↓Call_Sequence [steps.SequenceStep-1701093620311]: 
-      sourceSequence: lib_FullSyncImportExport.getProperties
-  ↓compute_script_params [steps.SimpleStep-1615995852193]: 
-    expression: |
-      'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
-      if (fs_cdb_props != null) {
-      	isGZ = (cdb_gz == "1" || cdb_gz == "true");
-      	cdb_bkp_ext = "_backup.json";
-      	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
-      	cdb_bkp_name = cdb_name + cdb_bkp_ext;
-      	cdb_bkp_file = cdb_folder + cdb_bkp_name;
-      	cmd = [
-      		"bash", "couchdb-dump.sh", "-b", "-q",
-      		"-H", fs_cdb_props.cdb_host,
-      		"-P", fs_cdb_props.cdb_port,
-      		"-d", fs_cdb_props.cdb_prefix + cdb_name,
-      		"-f", cdb_bkp_file,
-      		"-u", fs_cdb_props.cdb_user,
-      		"-p", fs_cdb_props.cdb_pwd,
-      		isGZ ? "-z" : ""
-      		];
-      	
-      	log.debug(cmd);
-      } else {
-      	log.warn("Error: Can not find Fullsync properties.");
-      }'
-  ↓jIf [steps.IfStep-1616060358384]: 
-    condition: fs_cdb_props != null
-    ↓Process_execute [steps.ProcessExecStep-1615997952561]: 
-      commandLine: cmd
-      executionDirectory: .//
-    ↓IfIsInThenElse [steps.IsInThenElseStep-1616072729147]: 
-      sourceDefinition: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1615997952561
-            - java.lang.String: 
-              - ↑value: ./exit/text()
-      testDefinition: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-              - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: AND
-                - java.lang.String: 
-                  - ↑value: ^0$
-      ↓jThen [steps.ThenStep-1616072729776]: 
-        ↓Element [steps.XMLElementStep-1616072788621]: 
-          nodeName: isSuccess
-          nodeText: true
-        ↓IfFileExists [steps.IfFileExistStep-1616001368537]: 
-          condition: '".//" + cdb_bkp_file + (isGZ ? ".gz" : "")'
-          ↓Element [steps.XMLElementStep-1616001540839]: 
-            nodeName: attachment
-            ↓jAttribute [steps.AttributeStep-1616001578695]: 
-              expression: '"attachment"'
-              nodeName: type
-            ↓jAttribute1 [steps.AttributeStep-1616001612459]: 
-              expression: 'cdb_bkp_name + (isGZ ? ".gz" : "")'
-              nodeName: name
-            ↓jAttribute11 [steps.AttributeStep-1616001644799]: 
-              expression: 'context.getProjectDirectory() + "/" + cdb_bkp_file + (isGZ ? ".gz" : "")'
-              nodeName: local-url
-            ↓jAttribute2 [steps.AttributeStep-1616001698826]: 
-              expression: '"application/octet-stream"'
-              nodeName: content-type
-      ↓jElse [steps.ElseStep-1616072729778]: 
-        ↓Element [steps.XMLElementStep-1616072803756]: 
-          nodeName: isSuccess
-          nodeText: false
-        ↓Element1 [steps.XMLElementStep-1616073002783]: 
-          nodeName: error
-          nodeText: true
+↓c8osecret [steps.XMLElementStep-1773074695517]: 
+  nodeName: xmlc8osecret
+  nodeText: ${lib_FullSyncImportExport.secretkey.secret}
+  output: false
+↓myVariable [steps.SimpleSourceStep-1773074757205]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1773074695517
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: c8osecret
+↓jIfThenElse [steps.IfThenElseStep-1773074581973]: 
+  condition: c8osecret == secret
+  ↓jThen [steps.ThenStep-1773074583541]: 
+    ↓jIf [steps.IfStep-1615999332441]: 
+      condition: cdb_name != ""
+      ↓Call_Sequence_ResetDBFolder [steps.SequenceStep-1616086412406]: 
+        sourceSequence: lib_FullSyncImportExport.FS_reset_db_folder
+        ↓reset_db_folder [variables.StepVariable-1700820088168]: 
+          value: 1
+        ↓secret [variables.StepVariable-1773075659081]: 
+      ↓jIf1 [steps.IfStep-1701093620308]: 
+        condition: context.httpSession.getAttribute("fs_cdb_props") == null
+        ↓Call_Sequence [steps.SequenceStep-1701093620311]: 
+          sourceSequence: lib_FullSyncImportExport.getProperties
+          ↓secret [variables.StepVariable-1773075659462]: 
+      ↓compute_script_params [steps.SimpleStep-1615995852193]: 
+        expression: |
+          'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          if (fs_cdb_props != null) {
+          	isGZ = (cdb_gz == "1" || cdb_gz == "true");
+          	cdb_bkp_ext = "_backup.json";
+          	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
+          	cdb_bkp_name = cdb_name + cdb_bkp_ext;
+          	cdb_bkp_file = cdb_folder + cdb_bkp_name;
+          	cmd = [
+          		"bash", "couchdb-dump.sh", "-b", "-q",
+          		"-H", fs_cdb_props.cdb_host,
+          		"-P", fs_cdb_props.cdb_port,
+          		"-d", fs_cdb_props.cdb_prefix + cdb_name,
+          		"-f", cdb_bkp_file,
+          		"-u", fs_cdb_props.cdb_user,
+          		"-p", fs_cdb_props.cdb_pwd,
+          		isGZ ? "-z" : ""
+          		];
+          	
+          	log.debug(cmd);
+          } else {
+          	log.warn("Error: Can not find Fullsync properties.");
+          }'
+      ↓jIf [steps.IfStep-1616060358384]: 
+        condition: fs_cdb_props != null
+        ↓Process_execute [steps.ProcessExecStep-1615997952561]: 
+          commandLine: cmd
+          executionDirectory: .//
+        ↓IfIsInThenElse [steps.IsInThenElseStep-1616072729147]: 
           sourceDefinition: 
             - xmlizable: 
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -92,13 +65,85 @@ responseTimeout: 3600
                 - java.lang.String: 
                   - ↑value: 1615997952561
                 - java.lang.String: 
-                  - ↑value: ./output/text()
+                  - ↑value: ./exit/text()
+          testDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: AND
+                    - java.lang.String: 
+                      - ↑value: ^0$
+          ↓jThen [steps.ThenStep-1616072729776]: 
+            ↓Element [steps.XMLElementStep-1616072788621]: 
+              nodeName: isSuccess
+              nodeText: true
+            ↓IfFileExists [steps.IfFileExistStep-1616001368537]: 
+              condition: '".//" + cdb_bkp_file + (isGZ ? ".gz" : "")'
+              ↓Element [steps.XMLElementStep-1616001540839]: 
+                nodeName: attachment
+                ↓jAttribute [steps.AttributeStep-1616001578695]: 
+                  expression: '"attachment"'
+                  nodeName: type
+                ↓jAttribute1 [steps.AttributeStep-1616001612459]: 
+                  expression: 'cdb_bkp_name + (isGZ ? ".gz" : "")'
+                  nodeName: name
+                ↓jAttribute11 [steps.AttributeStep-1616001644799]: 
+                  expression: 'context.getProjectDirectory() + "/" + cdb_bkp_file + (isGZ ? ".gz" : "")'
+                  nodeName: local-url
+                ↓jAttribute2 [steps.AttributeStep-1616001698826]: 
+                  expression: '"application/octet-stream"'
+                  nodeName: content-type
+          ↓jElse [steps.ElseStep-1616072729778]: 
+            ↓Element [steps.XMLElementStep-1616072803756]: 
+              nodeName: isSuccess
+              nodeText: false
+            ↓Element1 [steps.XMLElementStep-1616073002783]: 
+              nodeName: error
+              nodeText: true
+              sourceDefinition: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1615997952561
+                    - java.lang.String: 
+                      - ↑value: ./output/text()
+  ↓jElse [steps.ElseStep-1773074583543]: 
+    ↓Error_structure [steps.XMLErrorStep-1773074931686]: 
+      code: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: 403
+      details: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Invalid or missing secret parameter.
+      message: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+          - SmartType: 
+            - ↑mode: PLAIN
+            - →→: Forbidden
 ↓cdb_name [variables.RequestableVariable-1615999255642]: 
   value: 
 ↓cdb_gz [variables.RequestableVariable-1616086650067]: 
   value: 
 ↓reset_db_folder [variables.RequestableVariable-1700818079911]: 
   value: 1
+↓secret [variables.RequestableVariable-1773074595926]: 
+  value: 
+    - ↑ciphered: true
+    - ↑traceable: false
+    - →→: xd8e180806a1c1d83a6255212121ab827
+  visibility: '-1'
 ↓Test_Case [core.TestCase]: 
   ↓cdb_name [variables.TestCaseVariable-1615999906892]: 
     value: vvp

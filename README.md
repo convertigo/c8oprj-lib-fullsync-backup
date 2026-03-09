@@ -1,86 +1,171 @@
-# lib_FullSyncImportExport #
+
+
+
+# lib_FullSyncImportExport
 
 This project performs backup or restore of Convertigo Fullsync Databases.\
 It is aimed for Cloud or Docker Convertigo Server.\
 It is based on Daniele Bailo's [**couchdb-dump**](https://github.com/danielebailo/couchdb-dump) bash script.\
 The project must be deployed on the target Convertigo Server.
 
-## Studio Installation
 
-1. In your Convertigo Studio use `File->Import->Convertigo->Convertigo Project` and hit the `Next` button
-2. In the dialog `Project remote URL` field, paste the text below:
+For more technical informations : [documentation](./project.md)
+
+- [Installation](#installation)
+- [Sequences](#sequences)
+    - [FS_backup](#fs_backup)
+    - [FS_backup_all](#fs_backup_all)
+    - [FS_get_db_folder](#fs_get_db_folder)
+    - [FS_reset_db_folder](#fs_reset_db_folder)
+    - [FS_restore](#fs_restore)
+    - [getProperties](#getproperties)
+    - [ungzip](#ungzip)
+
+
+## Installation
+
+1. In your Convertigo Studio click on ![](https://github.com/convertigo/convertigo/blob/develop/eclipse-plugin-studio/icons/studio/project_import.gif?raw=true "Import a project in treeview") to import a project in the treeview
+2. In the import wizard
+
+   ![](https://github.com/convertigo/convertigo/blob/develop/eclipse-plugin-studio/tomcat/webapps/convertigo/templates/ftl/project_import_wzd.png?raw=true "Import Project")
+   
+   paste the text below into the `Project remote URL` field:
    <table>
-     <tr><td>Usage</td><td>Click the copy button</td></tr>
+     <tr><td>Usage</td><td>Click the copy button at the end of the line</td></tr>
      <tr><td>To contribute</td><td>
 
      ```
-     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup.git:branch=7.9.0
+     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup.git:branch=8.0.0.0
      ```
      </td></tr>
      <tr><td>To simply use</td><td>
 
      ```
-     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup/archive/7.9.0.zip
+     lib_FullSyncImportExport=https://github.com/convertigo/c8oprj-lib-fullsync-backup/archive/8.0.0.0.zip
      ```
      </td></tr>
     </table>
-3. Click the `Finish` button. This will automatically import the __lib_FullSyncGrp__ project
+3. Click the `Finish` button. This will automatically import the __lib_FullSyncImportExport__ project
 
-## Server Installation
-
-Deploy project from project context menu 'Deploy' in Studio or deploy project from PROJECTS widget in Administration console.
 
 ## Sequences
 
 ### FS_backup
 
-It performs a backup of the given Fullsync database name.
+**variables**
 
-- Variables:
-    - *cdb_name* (Name of the Fullsync database to backup - String)
-    - *cdb_gz* (Compress (.gz) the Fullsync database backup file: 1|true - String)
-    - *reset_db_folder* (Deletes the fs backup folder before making a new fs backup file: 1|true - String)
-
-**.pxml** requester : You will get an XML response with an attachment element that can be used as a Source for other Convertigo sequences:
-
-```xml
-<isSuccess>true</isSuccess>
-<attachment content-type="application/octet-stream" local-url="/workspace/projects/lib_FullSyncImportExport/dbs/<cdb_name>_backup.json" name="<cdb_name>_backup.json" type="attachment"/>
-```
-In case the backup fails, it will return the following:
-```xml
-<isSuccess>false</isSuccess>
-<error>couchdb-dump error message</error>
-```
-
-**.bin** requester : This will instruct the client to directly download file (Content-Type : "application/octet-stream")
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>cdb_gz</td><td></td>
+</tr>
+<tr>
+<td>cdb_name</td><td></td>
+</tr>
+<tr>
+<td>reset_db_folder</td><td></td>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+</table>
 
 ### FS_backup_all
 
-It performs a backup of all the present Fullsync databases.
+**variables**
 
-- Variables:
-    - *cdb_gz* (Compress (.gz) the Fullsync database backup file: 1|true - String)
-
-No direct download.
-All backup files are stored in the backup folder.
-You can have the files list using the **FS_get_db_folder** sequence.
-
-### FS_restore
-
-It restores a backup file and creates a Fullsync database given its name.\
-The file can be an **application/json** or **application/x-gzip** type.
-
-- Variables:
-    - *cdb_name* (Name of the Fullsync database to create - String)
-    - *cdb_file* (File path of the Fullsync database backup - Input file)
-
-If **cdb_name** Fullsync Database already exists on Convertigo Server, it is first deleted then recreated or else it creates a new Fullsync Database name.
-
-### FS_reset_db_folder
-
-It deletes the Fullsync databases backup folder
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>cdb_gz</td><td></td>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+</table>
 
 ### FS_get_db_folder
 
-It gets the file names of the Fullsync databases backup folder
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+</table>
+
+### FS_reset_db_folder
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>reset_db_folder</td><td></td>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+</table>
+
+### FS_restore
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>cdb_file</td><td></td>
+</tr>
+<tr>
+<td>cdb_name</td><td></td>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+</table>
+
+### getProperties
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+</table>
+
+### ungzip
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>secret</td><td></td>
+</tr>
+<tr>
+<td>sourceFile</td><td></td>
+</tr>
+<tr>
+<td>targetFile</td><td></td>
+</tr>
+</table>
+
+
