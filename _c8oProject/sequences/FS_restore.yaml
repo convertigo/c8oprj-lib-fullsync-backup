@@ -44,7 +44,7 @@ responseTimeout: 3600
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1616519769219
+                  - ↑value: 1773075669858
                 - java.lang.String: 
                   - ↑value: ./cdb_file/text()
         ↓targetFile [variables.StepVariable-1773075670958]: 
@@ -55,15 +55,20 @@ responseTimeout: 3600
             - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
             - com.twinsoft.convertigo.beans.common.XMLVector: 
               - java.lang.String: 
-                - ↑value: 1616519811566
+                - ↑value: 1773075670191
               - java.lang.String: 
                 - ↑value: ./document/fileType/text()
         testDefinition: 
           - xmlizable: 
             - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
             - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: '[AND, gzip]'
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+                  - java.lang.String: 
+                    - ↑value: AND
+                  - java.lang.String: 
+                    - ↑value: gzip
         ↓override_cdb_file [steps.SimpleStep-1773075671353]: 
           expression: cdb_file = targetFile;
       ↓compute_script_params [steps.SimpleStep-1773075670316]: 
@@ -102,15 +107,20 @@ responseTimeout: 3600
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1616002484701
+                  - ↑value: 1773075671653
                 - java.lang.String: 
                   - ↑value: ./exit/text()
           testDefinition: 
             - xmlizable: 
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: '[AND, ^0$]'
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: AND
+                    - java.lang.String: 
+                      - ↑value: ^0$
           ↓jThen [steps.ThenStep-1773075671918]: 
             ↓Element [steps.XMLElementStep-1773075672104]: 
               nodeName: isSuccess
@@ -127,7 +137,7 @@ responseTimeout: 3600
                   - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                   - com.twinsoft.convertigo.beans.common.XMLVector: 
                     - java.lang.String: 
-                      - ↑value: 1616002484701
+                      - ↑value: 1773075671653
                     - java.lang.String: 
                       - ↑value: ./output/text()
   ↓jElse [steps.ElseStep-1773075669674]: 
