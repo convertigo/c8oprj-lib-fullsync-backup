@@ -28,13 +28,32 @@ responseTimeout: 3600
           ↓secret [variables.StepVariable-1773075670685]: 
       ↓computeUnGZpath [steps.SimpleStep-1773075670143]: 
         expression: |
-          'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          'var fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          
           if (fs_cdb_props != null) {
-          	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
-          	targetFile = ".//" + cdb_folder + cdb_name + ".json";
-          	log.debug(">>>" + targetFile);
+              function getProp(key) {
+                  var value;
+          
+                  if (typeof fs_cdb_props.get == "function") {
+                      value = fs_cdb_props.get(key);
+                  } else {
+                      value = fs_cdb_props[key];
+                  }
+          
+                  return value == null ? null : String(value);
+              }
+          
+              var cdb_folder = getProp("cdb_folder");
+          
+              if (cdb_folder == null || cdb_folder == "") {
+                  cdb_folder = "dbs/";
+              }
+          
+              var targetFile = ".//" + cdb_folder + cdb_name + ".json";
+          
+              log.debug(">>>" + targetFile);
           } else {
-          	log.warn("Error: Can not find Fullsync properties.");
+              log.warn("Error: Can not find Fullsync properties.");
           }'
       ↓Call_Sequence1 [steps.SequenceStep-1773075670191]: 
         sourceSequence: lib_FullSyncImportExport.ungzip
@@ -73,28 +92,52 @@ responseTimeout: 3600
           expression: cdb_file = targetFile;
       ↓compute_script_params [steps.SimpleStep-1773075670316]: 
         expression: |
-          'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          'var fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          
           if (fs_cdb_props != null) {
+          	function getProp(key) {
+          	    var value;
+          
+          	    if (typeof fs_cdb_props.get == "function") {
+          	        value = fs_cdb_props.get(key);
+          	    } else {
+          	        value = fs_cdb_props[key];
+          	    }
+          
+          	    return value == null ? null : String(value);
+          	}
+          
+              var cdbHost = getProp("cdb_host");
+              var cdbPort = getProp("cdb_port");
+              var cdbPrefix = getProp("cdb_prefix");
+              var cdbUser = getProp("cdb_user");
+              var cdbPwd = getProp("cdb_pwd");
+          	var cdbCreate = (
+          	    cdb_create === true ||
+          	    String(cdb_create).toLowerCase() == "true" ||
+          	    String(cdb_create) == "1"
+          	);
+          
           	cmd = [
-          		"bash", "couchdb-dump.sh", "-r", "-q",
-          		"-H", fs_cdb_props.cdb_host,
-          		"-P", fs_cdb_props.cdb_port,
-          		"-d", fs_cdb_props.cdb_prefix + cdb_name,
-          		"-f", cdb_file,
-          		"-u", fs_cdb_props.cdb_user,
-          		"-p", fs_cdb_props.cdb_pwd
-          		];
-          	
-          	log.debug(cmd);
-          	
-          	var fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
-          	var delFS = fsclient.deleteDatabase(cdb_name);
-          	var putFS = fsclient.putDatabase(cdb_name);
-          	
-          	log.debug(">>>>delFS:"+delFS);
-          	log.debug(">>>>putFS:"+putFS);
+          	    "bash", "couchdb-dump.sh", "-r", "-q"
+          	];
+          
+          	if (cdbCreate) {
+          	    cmd.push("-c");
+          	}
+          
+          	cmd = cmd.concat([
+          	    "-H", cdbHost,
+          	    "-P", cdbPort,
+          	    "-d", cdbPrefix + cdb_name,
+          	    "-f", cdb_file,
+          	    "-u", cdbUser,
+          	    "-p", cdbPwd
+          	]);
+          
+              //log.debug(cmd);
           } else {
-          	log.warn("Error: Can not find Fullsync properties.");
+              log.warn("Error: Can not find Fullsync properties.");
           }'
       ↓jIf [steps.IfStep-1773075670388]: 
         condition: fs_cdb_props != null
@@ -166,6 +209,9 @@ responseTimeout: 3600
 ↓cdb_file [variables.RequestableVariable-1616002700241]: 
   comment: Uploaded backup file to restore, in JSON or GZip format.
   isFileUpload: true
+  value: 
+↓cdb_create [variables.RequestableVariable-1789136123876]: 
+  comment: Create DB on demand, if it is not listed.
   value: 
 ↓secret [variables.RequestableVariable-1773075669291]: 
   comment: Secret value that must match the lib_FullSyncImportExport.secretkey.secret project symbol.

@@ -24,12 +24,29 @@ comment: Lists the backup files currently available in the backup folder.
         ↓secret [variables.StepVariable-1773075664932]: 
     ↓init_vars [steps.SimpleStep-1773075664643]: 
       expression: |
-        'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+        'var fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+        
         if (fs_cdb_props != null) {
-        	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
-        	prj_url = fs_cdb_props.prj_url;
-        }else{
-        	log.warn("Error: Can not find Fullsync properties.");
+            function getProp(key) {
+                var value;
+        
+                if (typeof fs_cdb_props.get == "function") {
+                    value = fs_cdb_props.get(key);
+                } else {
+                    value = fs_cdb_props[key];
+                }
+        
+                return value == null ? null : String(value);
+            }
+        
+            var cdb_folder = getProp("cdb_folder");
+            if (cdb_folder == null || cdb_folder == "") {
+                cdb_folder = "dbs/";
+            }
+        
+            var prj_url = getProp("prj_url");
+        } else {
+            log.warn("Error: Can not find Fullsync properties.");
         }'
     ↓IfDirectoryExists [steps.IfFileExistStep-1773075664697]: 
       condition: '".//" + cdb_folder'
@@ -41,7 +58,7 @@ comment: Lists the backup files currently available in the backup folder.
             - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
             - com.twinsoft.convertigo.beans.common.XMLVector: 
               - java.lang.String: 
-                - ↑value: 1700664219899
+                - ↑value: 1773075665199
               - java.lang.String: 
                 - ↑value: ./file
         ↓jSimpleSource [steps.SimpleSourceStep-1773075665781]: 
@@ -50,7 +67,7 @@ comment: Lists the backup files currently available in the backup folder.
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1700667934200
+                  - ↑value: 1773075665244
                 - java.lang.String: 
                   - ↑value: ./text()
           variableName: filename
@@ -61,7 +78,7 @@ comment: Lists the backup files currently available in the backup folder.
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1700667934200
+                  - ↑value: 1773075665244
                 - java.lang.String: 
                   - ↑value: ./text()
           ↓jAttribute [steps.AttributeStep-1773075666090]: 
@@ -74,7 +91,7 @@ comment: Lists the backup files currently available in the backup folder.
                 - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                 - com.twinsoft.convertigo.beans.common.XMLVector: 
                   - java.lang.String: 
-                    - ↑value: 1700667934200
+                    - ↑value: 1773075665244
                   - java.lang.String: 
                     - ↑value: ./@size
           ↓Attribute1 [steps.XMLAttributeStep-1773075666182]: 
@@ -84,7 +101,7 @@ comment: Lists the backup files currently available in the backup folder.
                 - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                 - com.twinsoft.convertigo.beans.common.XMLVector: 
                   - java.lang.String: 
-                    - ↑value: 1700667934200
+                    - ↑value: 1773075665244
                   - java.lang.String: 
                     - ↑value: ./@lastModified
           ↓Attribute11 [steps.XMLAttributeStep-1773075666246]: 
@@ -94,7 +111,7 @@ comment: Lists the backup files currently available in the backup folder.
                 - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                 - com.twinsoft.convertigo.beans.common.XMLVector: 
                   - java.lang.String: 
-                    - ↑value: 1700667934200
+                    - ↑value: 1773075665244
                   - java.lang.String: 
                     - ↑value: ./text()
   ↓jElse [steps.ElseStep-1773075664451]: 

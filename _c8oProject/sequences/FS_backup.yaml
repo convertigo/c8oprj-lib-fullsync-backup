@@ -31,27 +31,60 @@ responseTimeout: 3600
           ↓secret [variables.StepVariable-1773075659462]: 
       ↓compute_script_params [steps.SimpleStep-1615995852193]: 
         expression: |
-          'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          'var fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
+          
           if (fs_cdb_props != null) {
-          	isGZ = (cdb_gz == "1" || cdb_gz == "true");
-          	cdb_bkp_ext = "_backup.json";
-          	cdb_folder = fs_cdb_props.cdb_folder || "dbs/";
-          	cdb_bkp_name = cdb_name + cdb_bkp_ext;
-          	cdb_bkp_file = cdb_folder + cdb_bkp_name;
-          	cmd = [
-          		"bash", "couchdb-dump.sh", "-b", "-q",
-          		"-H", fs_cdb_props.cdb_host,
-          		"-P", fs_cdb_props.cdb_port,
-          		"-d", fs_cdb_props.cdb_prefix + cdb_name,
-          		"-f", cdb_bkp_file,
-          		"-u", fs_cdb_props.cdb_user,
-          		"-p", fs_cdb_props.cdb_pwd,
-          		isGZ ? "-z" : ""
-          		];
-          	
-          	log.debug(cmd);
+          	function getProp(key) {
+          	    var value;
+          
+          	    if (typeof fs_cdb_props.get == "function") {
+          	        value = fs_cdb_props.get(key);
+          	    } else {
+          	        value = fs_cdb_props[key];
+          	    }
+          
+          	    return value == null ? null : String(value);
+          	}
+          
+              var isGZ = (cdb_gz == "1" || cdb_gz == "true");
+              var cdb_bkp_ext = "_backup.json";
+          
+              var cdb_folder = getProp("cdb_folder");
+              if (cdb_folder == null || cdb_folder == "") {
+                  cdb_folder = "dbs/";
+              }
+          
+              var cdb_host = getProp("cdb_host");
+              var cdb_port = getProp("cdb_port");
+              var cdb_prefix = getProp("cdb_prefix");
+              var cdb_user = getProp("cdb_user");
+              var cdb_pwd = getProp("cdb_pwd");
+          
+              // Un préfixe CouchDB vide est valide.
+              if (cdb_prefix == null) {
+                  cdb_prefix = "";
+              }
+          
+              var cdb_bkp_name = cdb_name + cdb_bkp_ext;
+              var cdb_bkp_file = cdb_folder + cdb_bkp_name;
+          
+              cmd = [
+                  "bash", "couchdb-dump.sh", "-b", "-q",
+                  "-H", cdb_host,
+                  "-P", cdb_port,
+                  "-d", cdb_prefix + cdb_name,
+                  "-f", cdb_bkp_file,
+                  "-u", cdb_user,
+                  "-p", cdb_pwd
+              ];
+          
+              if (isGZ) {
+                  cmd.push("-z");
+              }
+          
+              // log.debug(cmd);
           } else {
-          	log.warn("Error: Can not find Fullsync properties.");
+              log.warn("Error: Can not find Fullsync properties.");
           }'
       ↓jIf [steps.IfStep-1616060358384]: 
         condition: fs_cdb_props != null

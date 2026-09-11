@@ -24,36 +24,54 @@ responseTimeout: 3600
         ↓secret [variables.StepVariable-1773075662182]: 
     ↓get_databases_name [steps.SimpleStep-1773075661863]: 
       expression: |
-        'fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
-        if (fs_cdb_props != null) {
-        	//log.warn("prefix: "+ fs_cdb_props.cdb_prefix);
-        	try {
-        	cdb_prefix = fs_cdb_props.cdb_prefix;
-        	fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
-        	query = new java.util.HashMap();
-        	limit = "1000";
-        	skip = "0";
-        	query.put(''startkey'', ''"'' + cdb_prefix + ''"'');
-        	query.put(''endkey'', ''"'' + cdb_prefix + ''\uffff"'');
-        	query.put(''limit'', "" + limit);
-        	query.put(''skip'', "" + skip);
-        	//log.warning(">>>getalldbs:" + JSON.parse(fsclient.getAllDbs(query)).items);
-        	var all_dbs = JSON.parse(fsclient.getAllDbs(query)).items.map(function(item){
-        			//log.warning(">>>item:" + item);
-        			return cdb_prefix.length ?  (item.split(cdb_prefix))[1] : item
-        		}).filter(function(item){
-        			return item.indexOf("_") != 0
-        		});
-        	//log.warning(">>>"+all_dbs);
-        	} catch(e){
-        		log.warning(">>>Error:" + e);
-        	}
-        } else {
-        	log.warn("Error: Can not find Fullsync properties.");
-        }
+        'var fs_cdb_props = context.httpSession.getAttribute("fs_cdb_props");
         
-        //log.warning("version: "+com.twinsoft.convertigo.engine.ProductVersion.productVersion);
-        //log.warning("version compare: "+com.twinsoft.convertigo.engine.util.VersionUtils.compare(com.twinsoft.convertigo.engine.ProductVersion.productVersion, "7.5.7"));'
+        if (fs_cdb_props != null) {
+            function getProp(key) {
+                var value;
+        
+                if (typeof fs_cdb_props.get == "function") {
+                    value = fs_cdb_props.get(key);
+                } else {
+                    value = fs_cdb_props[key];
+                }
+        
+                return value == null ? null : String(value);
+            }
+        
+            try {
+                cdb_prefix = getProp("cdb_prefix");
+        
+                // Un préfixe absent ou vide est valide.
+                if (cdb_prefix == null) {
+                    cdb_prefix = "";
+                }
+        
+                fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
+        
+                query = new java.util.HashMap();
+                limit = "1000";
+                skip = "0";
+        
+                query.put("startkey", "\"" + cdb_prefix + "\"");
+                query.put("endkey", "\"" + cdb_prefix + "\uffff\"");
+                query.put("limit", limit);
+                query.put("skip", skip);
+        
+                var all_dbs = JSON.parse(fsclient.getAllDbs(query)).items
+                    .map(function (item) {
+                        return cdb_prefix.length ? item.split(cdb_prefix)[1] : item;
+                    })
+                    .filter(function (item) {
+                        return item.indexOf("_") != 0;
+                    });
+        
+            } catch (e) {
+                log.warning(">>> Error: " + e);
+            }
+        } else {
+            log.warn("Error: Can not find Fullsync properties.");
+        }'
     ↓jIterator [steps.SimpleIteratorStep-1773075661919]: 
       expression: all_dbs
       ↓jElement [steps.ElementStep-1773075662401]: 
@@ -68,7 +86,7 @@ responseTimeout: 3600
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1700861159154
+                  - ↑value: 1773075662401
                 - java.lang.String: 
                   - ↑value: ./text()
         ↓cdb_gz [variables.StepVariable-1773075662776]: 
@@ -85,7 +103,7 @@ responseTimeout: 3600
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1701091811042
+                  - ↑value: 1773075662437
                 - java.lang.String: 
                   - ↑value: ./document/isSuccess[1]/text()
   ↓jElse [steps.ElseStep-1773075661684]: 

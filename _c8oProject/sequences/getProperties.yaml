@@ -48,7 +48,7 @@ comment: Loads the FullSync/CouchDB server settings from Convertigo server prope
         	"prj_url": prj_url
         };
         
-        //log.warning(JSON.stringify(fs_cdb_props));'
+        //log.debug(JSON.stringify(fs_cdb_props, null, 2));'
     ↓Set_object_in_session [steps.SessionSetObjectStep-1773075673828]: 
       key: fs_cdb_props
       value: 
